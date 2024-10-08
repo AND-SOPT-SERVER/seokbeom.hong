@@ -19,8 +19,11 @@ public class DiaryRepository {
     }
 
     void delete(final Long id) {
-        //todo: 없는 ID 체크해줘야함
-        storage.remove(id);
+        if (storage.containsKey(id)) {
+            storage.remove(id);
+        }else{
+            System.out.println("해당 아이디의 일기가 존재하지 않습니다.");
+        }
     }
 
     List<Diary> findAll() {
