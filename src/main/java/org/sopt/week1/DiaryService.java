@@ -17,4 +17,8 @@ public class DiaryService {
     List<Diary> getDiaryList() {
         return diaryRepository.findAll();
     }
+
+    void patchDiary(final String id, final String body) {
+        diaryRepository.patch(Long.parseLong(id), body);
+    }
 }

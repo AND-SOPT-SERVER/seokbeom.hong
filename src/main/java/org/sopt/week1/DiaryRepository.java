@@ -41,5 +41,15 @@ public class DiaryRepository {
         // (3) 불러온 자료구조를 응답
         return diaryList;
     }
+
+    void patch(final Long id, final String body) {
+        if (storage.containsKey(id)) {
+            // put 메서드로 덮어쓰기
+            storage.put(id, body);
+        }else{
+            // 아이디에 매핑된 일기가 없을 경우 예외 처리
+            System.out.println("해당 아이디의 일기가 존재하지 않습니다.");
+        }
+    }
 }
 
