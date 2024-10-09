@@ -1,5 +1,6 @@
 package org.sopt.week1;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public class DiaryService {
@@ -19,7 +20,23 @@ public class DiaryService {
     }
 
     void patchDiary(final String id, final String body) {
-        diaryRepository.patch(Long.parseLong(id), body);
+        Diary diary = diaryRepository.findDiaryById(Long.parseLong(id));
+        // 같은 날에 수정하는 경우
+        if (diary.getModifiedDate().equals(LocalDate.now())) {
+            int modifiedCount = diary.getModifiedCount();
+            if (modifiedCount == 2) {
+                System.out.println("일기는 하루에 2번까지만 수정할 수 있습니다.");
+            } else {
+                diary.setModifiedCount(++modifiedCount);
+                diary.setBody(body);
+                diaryRepository.patch(diary);
+            }
+        } else {
+            // 생성자에서 수정횟수와 수정날짜를 초기화해줌
+            diary.setModifiedCount(0);
+            diary.setModifiedDate(LocalDate.now());
+            diaryRepository.patch(diary);
+        }
     }
 
     void restoreDiary(final String id) {

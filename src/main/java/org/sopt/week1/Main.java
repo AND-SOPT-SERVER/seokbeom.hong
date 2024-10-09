@@ -72,7 +72,6 @@ public class Main {
                             server.getList().forEach(diary -> {
                                 try {
                                     ConsoleIO.printLine(diary.getId() + " : " + diary.getBody());
-                                    ConsoleIO.printLine(diary.getDate().toString());
                                 } catch (IOException e) {
                                     throw new RuntimeException(e);
                                 }
@@ -95,7 +94,6 @@ public class Main {
 
                             ConsoleIO.printLine("수정 body 를 입력하세요!");
                             final String inputBody = ConsoleIO.readLine();
-
                             server.patch(inputId, inputBody);
                         }
                         case "RESTORE" -> {

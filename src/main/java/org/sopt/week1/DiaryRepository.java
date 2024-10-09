@@ -13,7 +13,7 @@ public class DiaryRepository {
     void save(final Diary diary) {
         // 채번 과정
         final long id = numbering.addAndGet(1);
-
+        diary.setId(id);
         // 저장 과정
         storage.put(id, diary);
     }
@@ -33,23 +33,20 @@ public class DiaryRepository {
         // (2) 저장한 값을 불러오는 반복 구조
         for (long index = 1; index <= numbering.longValue(); index++) {
             Diary diary = storage.get(index);
-            final String body = diary.getBody();
             final boolean isDelete = diary.getDeleteStatus();
 
             // (2-1) 불러온 값을 구성한 자료구조로 이관
             // 삭제 되지 않은 일기만을 조회
             if (!isDelete) {
-                diaryList.add(new Diary(index, body));
+                diaryList.add(diary);
             }
         }
         // (3) 불러온 자료구조를 응답
         return diaryList;
     }
 
-    void patch(final Long id, final String body) {
-        Diary diary = findDiaryById(id);
-        diary.setBody(body);
-        storage.put(id, diary);
+    void patch(final Diary diary) {
+        storage.put(diary.getId(), diary);
     }
 
     void restore(final Long id) {
