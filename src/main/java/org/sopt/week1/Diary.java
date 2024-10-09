@@ -6,7 +6,7 @@ public class Diary {
     private Long id;
     private String body;
     private boolean isDelete;
-    private final LocalDate modifiedDate;
+    private LocalDate modifiedDate;
     private int modifiedCount;
     public Diary(Long id, String body) {
         this.id = id;
@@ -17,6 +17,9 @@ public class Diary {
     }
     public Long getId() {
         return id;
+    }
+    public void setId(Long id) {
+        this.id = id;
     }
     public String getBody() {
         return body;
@@ -32,11 +35,19 @@ public class Diary {
         this.body = body;
     }
 
-    public void addModifiedCount() {
-        this.modifiedCount++;
+    public void setModifiedCount(int count) {
+        this.modifiedCount = count;
     }
 
-    public LocalDate getDate() {
+    public void setModifiedDate(LocalDate localDate) {
+        this.modifiedDate = localDate;
+    }
+
+    public LocalDate getModifiedDate() {
         return modifiedDate;
+    }
+
+    public int getModifiedCount() {
+        return modifiedCount;
     }
 }
