@@ -1,6 +1,8 @@
 package org.sopt.week1;
 
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class DiaryController {
     private Status status = Status.READY;
@@ -24,8 +26,17 @@ public class DiaryController {
     }
 
     final void post(final String body) {
-        //todo: 이모지나 아랍어같은 값이 들어왔을 때 어떻게 글자수를 체크할 것인지
-        if (body.length() > 30) {
+        Pattern graphemePattern = Pattern.compile("\\X");
+        Matcher graphemeMatcher = graphemePattern.matcher("");
+
+        graphemeMatcher.reset(body);
+        int count = 0;
+        while (graphemeMatcher.find()) {
+            count++;
+        }
+
+        System.out.println("글자수 : " + count);
+        if (count > 30) {
             throw new IllegalArgumentException();
         }
         diaryService.postDiary(body);
