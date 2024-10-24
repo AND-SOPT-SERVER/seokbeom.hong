@@ -65,4 +65,16 @@ public class DiaryEntity {
         return createdAt;
     }
 
+    public void setTitle(final String title) {
+        this.title = title;
+    }
+
+    public void setContent(final String content) {
+        this.content = content;
+        this.contentLength = content.length();
+    }
+
+    public void setUpdatedAt() {
+        this.updatedAt = LocalDate.now();
+    }
 }

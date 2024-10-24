@@ -7,6 +7,7 @@ import org.sopt.diary.service.DiaryService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -48,5 +49,17 @@ public class DiaryController {
             @PathVariable final Long id
     ) {
         return ResponseEntity.ok(diaryService.getDetail(id));
+    }
+
+    @PatchMapping("/diary/{id}")
+    ResponseEntity<String> patch(
+            @PathVariable final Long id,
+            @RequestBody final DiaryPatchRequest diaryPatchRequest
+    ) {
+        if (diaryPatchRequest.getContent().length() > 30) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("일기는 30자까지만 작성할 수 있습니다.");
+        }
+        diaryService.patchDiary(id, diaryPatchRequest);
+        return ResponseEntity.ok().build();
     }
 }
