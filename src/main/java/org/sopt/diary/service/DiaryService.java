@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import org.sopt.diary.api.DiaryCategoryResponse;
 import org.sopt.diary.api.DiaryDetailResponse;
 import org.sopt.diary.api.DiaryPatchRequest;
 import org.sopt.diary.api.DiaryRequest;
@@ -23,7 +24,7 @@ public class DiaryService {
     }
 
     @Transactional
-    public void createDiary(final DiaryRequest diaryRequest){
+    public void createDiary(final DiaryRequest diaryRequest) {
         Optional<DiaryEntity> lastDiary = diaryRepository.findTop1ByOrderByIdDesc();
         if (lastDiary.isPresent()) {
             DiaryEntity lastOne = lastDiary.get();
@@ -85,5 +86,16 @@ public class DiaryService {
         final DiaryEntity diary = diaryRepository.findById(id)
                 .orElseThrow(EntityNotFoundException::new);
         diaryRepository.delete(diary);
+    }
+
+    @Transactional(readOnly = true)
+    public List<DiaryCategoryResponse> getDiaryListByCategory(final String category) {
+        List<DiaryEntity> diaryList = diaryRepository.findAllByCategory(category);
+        List<DiaryCategoryResponse> resultList = new ArrayList<>();
+        for (DiaryEntity diary : diaryList) {
+            resultList.add(new DiaryCategoryResponse(diary.getId(), diary.getTitle(), diary.getCategory(),
+                    diary.getContent()));
+        }
+        return resultList;
     }
 }

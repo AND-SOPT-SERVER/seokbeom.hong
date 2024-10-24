@@ -10,4 +10,6 @@ public interface DiaryRepository extends JpaRepository<DiaryEntity, Long> {
     List<DiaryEntity> findTop10ByOrderByContentLengthDesc();
     Optional<DiaryEntity> findTop1ByOrderByIdDesc();
     Optional<DiaryEntity> findByTitle(final String title);
+
+    List<DiaryEntity> findAllByCategory(String category);
 }
