@@ -22,7 +22,7 @@ public class DiaryService {
     }
 
     public List<Diary> getList() {
-        final List<DiaryEntity> diaryEntityList = diaryRepository.findAll();
+        final List<DiaryEntity> diaryEntityList = diaryRepository.findTop10ByOrderByIdDesc();
         final List<Diary> diaryList = new ArrayList<>();
 
         for (DiaryEntity diaryEntity : diaryEntityList) {
