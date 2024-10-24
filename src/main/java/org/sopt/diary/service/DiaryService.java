@@ -1,8 +1,12 @@
 package org.sopt.diary.service;
 
 import jakarta.persistence.EntityNotFoundException;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import javax.naming.TimeLimitExceededException;
 import org.sopt.diary.api.DiaryDetailResponse;
 import org.sopt.diary.api.DiaryPatchRequest;
 import org.sopt.diary.api.DiaryRequest;
@@ -20,7 +24,21 @@ public class DiaryService {
     }
 
     @Transactional
-    public void createDiary(final DiaryRequest diaryRequest) {
+    public void createDiary(final DiaryRequest diaryRequest){
+        Optional<DiaryEntity> lastDiary = diaryRepository.findTop1ByOrderByIdDesc();
+        if (lastDiary.isPresent()) {
+            DiaryEntity lastOne = lastDiary.get();
+
+            LocalDateTime lastUpdatedAt = lastOne.getUpdatedAt();
+            LocalDateTime now = LocalDateTime.now();
+            Duration duration = Duration.between(lastUpdatedAt, now);
+
+            // 5분 이내면 예외 발생
+            if (duration.toMinutes() < 5) {
+                throw new RuntimeException("마지막 일기 작성 후 5분이 지나지 않았습니다.");
+            }
+
+        }
         DiaryEntity diary = new DiaryEntity(diaryRequest.getName(), diaryRequest.getTitle(),
                 diaryRequest.getContent());
         diaryRepository.save(diary);
@@ -36,7 +54,6 @@ public class DiaryService {
                     new Diary(diaryEntity.getId(), diaryEntity.getName())
             );
         }
-
         return diaryList;
     }
 
