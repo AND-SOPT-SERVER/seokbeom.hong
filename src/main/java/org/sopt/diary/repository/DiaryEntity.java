@@ -78,6 +78,10 @@ public class DiaryEntity {
         return category;
     }
 
+    public void setCategory(final String category) {
+        this.category = category;
+    }
+
     public void setTitle(final String title) {
         this.title = title;
     }

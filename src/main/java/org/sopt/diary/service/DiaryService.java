@@ -76,6 +76,7 @@ public class DiaryService {
                 .orElseThrow(EntityNotFoundException::new);
         diary.setTitle(diaryPatchRequest.getTitle());
         diary.setContent(diaryPatchRequest.getContent());
+        diary.setCategory(diaryPatchRequest.getCategory());
         diary.setUpdatedAt();
     }
 
