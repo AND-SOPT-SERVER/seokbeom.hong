@@ -6,7 +6,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import javax.naming.TimeLimitExceededException;
 import org.sopt.diary.api.DiaryDetailResponse;
 import org.sopt.diary.api.DiaryPatchRequest;
 import org.sopt.diary.api.DiaryRequest;
@@ -37,8 +36,13 @@ public class DiaryService {
             if (duration.toMinutes() < 5) {
                 throw new RuntimeException("마지막 일기 작성 후 5분이 지나지 않았습니다.");
             }
-
         }
+
+        Optional<DiaryEntity> existTitle = diaryRepository.findByTitle(diaryRequest.getTitle());
+        if (existTitle.isPresent()) {
+            throw new RuntimeException("중복되는 제목이 존재합니다.");
+        }
+
         DiaryEntity diary = new DiaryEntity(diaryRequest.getName(), diaryRequest.getTitle(),
                 diaryRequest.getContent());
         diaryRepository.save(diary);
