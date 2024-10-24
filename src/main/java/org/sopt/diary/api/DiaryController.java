@@ -7,6 +7,7 @@ import org.sopt.diary.service.DiaryService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,7 +22,7 @@ public class DiaryController {
 
     @PostMapping("/diary")
     ResponseEntity<String> post(
-            @RequestBody DiaryRequest diaryRequest
+            @RequestBody final DiaryRequest diaryRequest
     ) {
         if (diaryRequest.getContent().length() > 30) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("일기는 30자까지만 작성할 수 있습니다.");
@@ -40,5 +41,12 @@ public class DiaryController {
         }
 
         return ResponseEntity.ok(new DiaryListResponse(diaryResponseList));
+    }
+
+    @GetMapping("/diary/{id}")
+    ResponseEntity<DiaryDetailResponse> getDetail(
+            @PathVariable final Long id
+    ) {
+        return ResponseEntity.ok(diaryService.getDetail(id));
     }
 }

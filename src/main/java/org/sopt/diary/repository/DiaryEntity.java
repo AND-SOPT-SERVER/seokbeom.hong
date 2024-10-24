@@ -12,28 +12,27 @@ public class DiaryEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Long id;
+    private Long id;
 
     @Column
-    public String name;
+    private String name;
 
     @Column
-    public String title;
+    private String title;
 
     @Column
-    public String content;
+    private String content;
 
     @Column
-    public int contentLength;
+    private int contentLength;
 
     @Column
-    public LocalDate createdAt;
+    private LocalDate createdAt;
 
     @Column
-    public LocalDate updatedAt;
+    private LocalDate updatedAt;
 
     public DiaryEntity() {
-
     }
 
     public DiaryEntity(final String name, final String title, final String content) {
@@ -53,4 +52,17 @@ public class DiaryEntity {
     public String getName() {
         return name;
     }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public LocalDate getCreatedAt() {
+        return createdAt;
+    }
+
 }
