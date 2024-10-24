@@ -56,4 +56,11 @@ public class DiaryService {
         diary.setContent(diaryPatchRequest.getContent());
         diary.setUpdatedAt();
     }
+
+    @Transactional
+    public void deleteDiary(final Long id) {
+        final DiaryEntity diary = diaryRepository.findById(id)
+                .orElseThrow(EntityNotFoundException::new);
+        diaryRepository.delete(diary);
+    }
 }
