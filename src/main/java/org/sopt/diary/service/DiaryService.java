@@ -46,7 +46,7 @@ public class DiaryService {
 
     @Transactional(readOnly = true)
     public List<Diary> getList() {
-        final List<DiaryEntity> diaryEntityList = diaryRepository.findTop10ByOrderByIdDesc();
+        final List<DiaryEntity> diaryEntityList = diaryRepository.findTop10ByOrderByContentLengthDesc();
         final List<Diary> diaryList = new ArrayList<>();
 
         for (DiaryEntity diaryEntity : diaryEntityList) {
