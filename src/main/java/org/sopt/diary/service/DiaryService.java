@@ -44,7 +44,7 @@ public class DiaryService {
         }
 
         DiaryEntity diary = new DiaryEntity(diaryRequest.getName(), diaryRequest.getTitle(),
-                diaryRequest.getContent());
+                diaryRequest.getContent(), diaryRequest.getCategory());
         diaryRepository.save(diary);
     }
 
@@ -55,7 +55,7 @@ public class DiaryService {
 
         for (DiaryEntity diaryEntity : diaryEntityList) {
             diaryList.add(
-                    new Diary(diaryEntity.getId(), diaryEntity.getName())
+                    new Diary(diaryEntity.getId(), diaryEntity.getName(), diaryEntity.getCategory())
             );
         }
         return diaryList;
@@ -66,7 +66,8 @@ public class DiaryService {
         final DiaryEntity diary = diaryRepository.findById(id)
                 .orElseThrow(EntityNotFoundException::new);
         return new DiaryDetailResponse(diary.getId(), diary.getName(), diary.getTitle(), diary.getContent(),
-                diary.getCreatedAt());
+                diary.getCategory(), diary.getCreatedAt()
+        );
     }
 
     @Transactional

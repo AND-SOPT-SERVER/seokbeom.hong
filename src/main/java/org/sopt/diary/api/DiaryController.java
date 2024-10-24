@@ -39,7 +39,7 @@ public class DiaryController {
         List<DiaryResponse> diaryResponseList = new ArrayList<>();
 
         for (Diary diary : diaryList) {
-            diaryResponseList.add(new DiaryResponse(diary.getId(), diary.getName()));
+            diaryResponseList.add(new DiaryResponse(diary.getId(), diary.getName(), diary.getCategory()));
         }
 
         return ResponseEntity.ok(new DiaryListResponse(diaryResponseList));

@@ -22,6 +22,9 @@ public class DiaryEntity {
     private String title;
 
     @Column
+    private String category;
+
+    @Column
     private String content;
 
     @Column
@@ -36,10 +39,11 @@ public class DiaryEntity {
     public DiaryEntity() {
     }
 
-    public DiaryEntity(final String name, final String title, final String content) {
+    public DiaryEntity(final String name, final String title, final String content, final String category) {
         this.name = name;
         this.title = title;
         this.content = content;
+        this.category = category;
         this.contentLength = content.length();
         this.createdAt = LocalDate.now();
         this.updatedAt = LocalDateTime.now();
@@ -68,6 +72,10 @@ public class DiaryEntity {
 
     public LocalDateTime getUpdatedAt() {
         return updatedAt;
+    }
+
+    public String getCategory() {
+        return category;
     }
 
     public void setTitle(final String title) {
