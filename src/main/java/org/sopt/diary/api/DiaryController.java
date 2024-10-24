@@ -20,9 +20,12 @@ public class DiaryController {
     }
 
     @PostMapping("/diary")
-    ResponseEntity<Void> post(
+    ResponseEntity<String> post(
             @RequestBody DiaryRequest diaryRequest
     ) {
+        if (diaryRequest.getContent().length() > 30) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("일기는 30자까지만 작성할 수 있습니다.");
+        }
         diaryService.createDiary(diaryRequest);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
