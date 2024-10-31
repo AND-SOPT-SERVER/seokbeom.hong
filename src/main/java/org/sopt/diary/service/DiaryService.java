@@ -6,6 +6,8 @@ import java.util.List;
 import org.sopt.diary.api.dto.DiaryDetailResponse;
 import org.sopt.diary.api.dto.DiaryPatchRequest;
 import org.sopt.diary.api.dto.DiaryCreateRequest;
+import org.sopt.diary.exception.CustomException;
+import org.sopt.diary.exception.ErrorType;
 import org.sopt.diary.repository.DiaryEntity;
 import org.sopt.diary.repository.DiaryRepository;
 import org.springframework.stereotype.Component;
@@ -21,6 +23,9 @@ public class DiaryService {
 
     @Transactional
     public void createDiary(final DiaryCreateRequest diaryCreateRequest) {
+        if (diaryRepository.existsByTitle(diaryCreateRequest.getTitle())) {
+            throw new CustomException(ErrorType.DUPLICATE_TITLE_ERROR);
+        }
         DiaryEntity diary = new DiaryEntity(diaryCreateRequest.getName(), diaryCreateRequest.getTitle(),
                 diaryCreateRequest.getContent(), diaryCreateRequest.getCategory());
         diaryRepository.save(diary);

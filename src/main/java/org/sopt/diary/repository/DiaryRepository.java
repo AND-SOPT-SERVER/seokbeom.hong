@@ -16,4 +16,6 @@ public interface DiaryRepository extends JpaRepository<DiaryEntity, Long> {
                 .orElseThrow(() -> new CustomException(ErrorType.DIARY_NOTFOUND_ERROR));
         return diary;
     }
+
+    boolean existsByTitle(String title);
 }
