@@ -7,7 +7,7 @@ import org.sopt.diary.exception.ErrorType;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface DiaryRepository extends JpaRepository<DiaryEntity, Long> {
-    List<DiaryEntity> findTop10ByOrderByIdDesc();
+    List<DiaryEntity> findTop10ByIsShareTrueOrderByIdDesc();
     List<DiaryEntity> findTop10ByUserIdOrderByIdDesc(Long userId);
 
     Optional<DiaryEntity> findById(Long id);
