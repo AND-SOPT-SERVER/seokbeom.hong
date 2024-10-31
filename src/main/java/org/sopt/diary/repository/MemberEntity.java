@@ -34,4 +34,8 @@ public class MemberEntity {
     public MemberEntity() {
 
     }
+
+    public Long getId() {
+        return id;
+    }
 }

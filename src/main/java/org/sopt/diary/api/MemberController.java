@@ -1,6 +1,7 @@
 package org.sopt.diary.api;
 
 import jakarta.validation.Valid;
+import org.sopt.diary.api.dto.MemberLoginRequest;
 import org.sopt.diary.api.dto.MemberSignUpRequest;
 import org.sopt.diary.service.MemberService;
 import org.springframework.http.HttpStatus;
@@ -20,15 +21,17 @@ public class MemberController {
     }
 
     @PostMapping("/auth/signUp")
-    ResponseEntity<Long> postMember(
+    ResponseEntity<Void> postMember(
             @Valid @RequestBody final MemberSignUpRequest memberSignUpRequest
     ) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(memberService.signUp(memberSignUpRequest));
+        memberService.signUp(memberSignUpRequest);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @GetMapping("/auth/login")
-    ResponseEntity<Void> getMembers() {
-
-        return ResponseEntity.ok().build();
+    @PostMapping("/auth/login")
+    ResponseEntity<Long> getMembers(
+            @Valid @RequestBody final MemberLoginRequest memberLoginRequest
+            ) {
+        return ResponseEntity.ok(memberService.login(memberLoginRequest)).build();
     }
 }
