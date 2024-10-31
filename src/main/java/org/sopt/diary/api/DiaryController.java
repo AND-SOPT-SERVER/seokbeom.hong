@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -43,8 +44,10 @@ public class DiaryController {
     }
 
     @GetMapping("/diary/home")
-    ResponseEntity<DiaryListResponse> get() {
-        List<Diary> diaryList = diaryService.getList();
+    ResponseEntity<DiaryListResponse> get(
+            @RequestParam final String sortBy
+    ) {
+        List<Diary> diaryList = diaryService.getList(sortBy);
         List<DiaryResponse> diaryResponseList = new ArrayList<>();
 
         for (Diary diary : diaryList) {
@@ -85,10 +88,11 @@ public class DiaryController {
 
     @GetMapping("/diary/me")
     ResponseEntity<DiaryListResponse> getMyDiary(
-            @RequestHeader(value = "userId", required = false) String userId
+            @RequestHeader(value = "userId", required = false) String userId,
+            @RequestParam String sortBy
     ) {
         checkUserIdHeader(userId);
-        List<Diary> diaryList = diaryService.getMyDiaryList(userId);
+        List<Diary> diaryList = diaryService.getMyDiaryList(userId, sortBy);
         List<DiaryResponse> diaryResponseList = new ArrayList<>();
 
         for (Diary diary : diaryList) {

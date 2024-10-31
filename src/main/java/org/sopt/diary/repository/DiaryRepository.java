@@ -8,7 +8,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface DiaryRepository extends JpaRepository<DiaryEntity, Long> {
     List<DiaryEntity> findTop10ByIsShareTrueOrderByIdDesc();
+    List<DiaryEntity> findTop10ByIsShareTrueOrderByContentLengthDesc();
     List<DiaryEntity> findTop10ByUserIdOrderByIdDesc(Long userId);
+    List<DiaryEntity> findTop10ByUserIdOrderByContentLengthDesc(Long userId);
 
     Optional<DiaryEntity> findById(Long id);
 

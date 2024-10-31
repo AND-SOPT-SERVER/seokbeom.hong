@@ -38,8 +38,15 @@ public class DiaryService {
     }
 
     @Transactional(readOnly = true)
-    public List<Diary> getList() {
-        final List<DiaryEntity> diaryEntityList = diaryRepository.findTop10ByIsShareTrueOrderByIdDesc();
+    public List<Diary> getList(final String sortBy) {
+        final List<DiaryEntity> diaryEntityList;
+        if (sortBy.equals("latest")) {
+            diaryEntityList = diaryRepository.findTop10ByIsShareTrueOrderByIdDesc();
+        } else if (sortBy.equals("contentLength")) {
+            diaryEntityList = diaryRepository.findTop10ByIsShareTrueOrderByContentLengthDesc();
+        } else {
+            throw new CustomException(ErrorType.SORT_NOTFOUND_ERROR);
+        }
         final List<Diary> diaryList = new ArrayList<>();
 
         for (DiaryEntity diaryEntity : diaryEntityList) {
@@ -98,9 +105,16 @@ public class DiaryService {
     }
 
     @Transactional(readOnly = true)
-    public List<Diary> getMyDiaryList(final String userId) {
+    public List<Diary> getMyDiaryList(final String userId, final String sortBy) {
         isExistMemberCheck(userId);
-        final List<DiaryEntity> diaryEntityList = diaryRepository.findTop10ByUserIdOrderByIdDesc(Long.parseLong(userId));
+        final List<DiaryEntity> diaryEntityList;
+        if (sortBy.equals("latest")) {
+            diaryEntityList = diaryRepository.findTop10ByUserIdOrderByIdDesc(Long.parseLong(userId));
+        } else if (sortBy.equals("contentLength")) {
+            diaryEntityList = diaryRepository.findTop10ByUserIdOrderByContentLengthDesc(Long.parseLong(userId));
+        } else {
+            throw new CustomException(ErrorType.SORT_NOTFOUND_ERROR);
+        }
         final List<Diary> diaryList = new ArrayList<>();
 
         for (DiaryEntity diaryEntity : diaryEntityList) {
