@@ -30,7 +30,7 @@ public class MemberService {
     }
 
     @Transactional(readOnly = true)
-    public MemberLoginResponse login(MemberLoginRequest memberLoginRequest) {
+    public MemberLoginResponse login(final MemberLoginRequest memberLoginRequest) {
         MemberEntity member = memberRepository.findByNickNameAndPasswordOrThrow(memberLoginRequest.getNickName(),
                 memberLoginRequest.getPassword());
         return new MemberLoginResponse(member.getId());
