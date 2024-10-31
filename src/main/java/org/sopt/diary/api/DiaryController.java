@@ -58,11 +58,8 @@ public class DiaryController {
     @PatchMapping("/diary/{id}")
     ResponseEntity<String> patch(
             @PathVariable final Long id,
-            @RequestBody final DiaryPatchRequest diaryPatchRequest
+            @Valid @RequestBody final DiaryPatchRequest diaryPatchRequest
     ) {
-        if (diaryPatchRequest.getContent().length() > 30) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("일기는 30자까지만 작성할 수 있습니다.");
-        }
         diaryService.patchDiary(id, diaryPatchRequest);
         return ResponseEntity.ok().build();
     }

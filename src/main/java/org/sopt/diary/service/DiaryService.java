@@ -50,8 +50,7 @@ public class DiaryService {
 
     @Transactional
     public void patchDiary(final Long id, DiaryPatchRequest diaryPatchRequest) {
-        final DiaryEntity diary = diaryRepository.findById(id)
-                .orElseThrow(EntityNotFoundException::new);
+        final DiaryEntity diary = diaryRepository.findByIdOrThrow(id);
         diary.setTitle(diaryPatchRequest.getTitle());
         diary.setContent(diaryPatchRequest.getContent());
         diary.setUpdatedAt();
@@ -59,8 +58,7 @@ public class DiaryService {
 
     @Transactional
     public void deleteDiary(final Long id) {
-        final DiaryEntity diary = diaryRepository.findById(id)
-                .orElseThrow(EntityNotFoundException::new);
+        final DiaryEntity diary = diaryRepository.findByIdOrThrow(id);
         diaryRepository.delete(diary);
     }
 }
