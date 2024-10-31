@@ -9,6 +9,7 @@ import org.sopt.diary.api.dto.DiaryPatchRequest;
 import org.sopt.diary.api.dto.DiaryCreateRequest;
 import org.sopt.diary.exception.CustomException;
 import org.sopt.diary.exception.ErrorType;
+import org.sopt.diary.repository.Category;
 import org.sopt.diary.repository.DiaryEntity;
 import org.sopt.diary.repository.DiaryRepository;
 import org.sopt.diary.repository.MemberEntity;
@@ -38,12 +39,12 @@ public class DiaryService {
     }
 
     @Transactional(readOnly = true)
-    public List<Diary> getList(final String sortBy) {
+    public List<Diary> getList(final String sortBy, final Category category) {
         final List<DiaryEntity> diaryEntityList;
         if (sortBy.equals("latest")) {
-            diaryEntityList = diaryRepository.findTop10ByIsShareTrueOrderByIdDesc();
+            diaryEntityList = diaryRepository.findTop10ByIsShareTrueAndCategoryOrderByCreatedAtDesc(category);
         } else if (sortBy.equals("contentLength")) {
-            diaryEntityList = diaryRepository.findTop10ByIsShareTrueOrderByContentLengthDesc();
+            diaryEntityList = diaryRepository.findByIsShareTrueAndCategoryOrderByContentLengthDesc(category);
         } else {
             throw new CustomException(ErrorType.SORT_NOTFOUND_ERROR);
         }
@@ -105,13 +106,13 @@ public class DiaryService {
     }
 
     @Transactional(readOnly = true)
-    public List<Diary> getMyDiaryList(final String userId, final String sortBy) {
+    public List<Diary> getMyDiaryList(final String userId, final String sortBy, final Category category) {
         isExistMemberCheck(userId);
         final List<DiaryEntity> diaryEntityList;
         if (sortBy.equals("latest")) {
-            diaryEntityList = diaryRepository.findTop10ByUserIdOrderByIdDesc(Long.parseLong(userId));
+            diaryEntityList = diaryRepository.findTop10ByUserIdAndCategoryOrderByCreatedAtDesc(Long.parseLong(userId),category);
         } else if (sortBy.equals("contentLength")) {
-            diaryEntityList = diaryRepository.findTop10ByUserIdOrderByContentLengthDesc(Long.parseLong(userId));
+            diaryEntityList = diaryRepository.findByUserIdAndCategoryOrderByContentLengthDesc(Long.parseLong(userId), category);
         } else {
             throw new CustomException(ErrorType.SORT_NOTFOUND_ERROR);
         }

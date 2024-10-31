@@ -11,6 +11,7 @@ import org.sopt.diary.api.dto.DiaryCreateRequest;
 import org.sopt.diary.api.dto.DiaryResponse;
 import org.sopt.diary.exception.CustomException;
 import org.sopt.diary.exception.ErrorType;
+import org.sopt.diary.repository.Category;
 import org.sopt.diary.service.Diary;
 import org.sopt.diary.service.DiaryService;
 import org.springframework.http.HttpStatus;
@@ -43,11 +44,12 @@ public class DiaryController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @GetMapping("/diary/home")
+    @GetMapping("/diary/home/{category}")
     ResponseEntity<DiaryListResponse> get(
+            @PathVariable final Category category,
             @RequestParam final String sortBy
-    ) {
-        List<Diary> diaryList = diaryService.getList(sortBy);
+            ) {
+        List<Diary> diaryList = diaryService.getList(sortBy, category);
         List<DiaryResponse> diaryResponseList = new ArrayList<>();
 
         for (Diary diary : diaryList) {
@@ -86,13 +88,14 @@ public class DiaryController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/diary/me")
+    @GetMapping("/diary/me//{category}")
     ResponseEntity<DiaryListResponse> getMyDiary(
             @RequestHeader(value = "userId", required = false) String userId,
-            @RequestParam String sortBy
+            @RequestParam String sortBy,
+            @PathVariable final Category category
     ) {
         checkUserIdHeader(userId);
-        List<Diary> diaryList = diaryService.getMyDiaryList(userId, sortBy);
+        List<Diary> diaryList = diaryService.getMyDiaryList(userId, sortBy, category);
         List<DiaryResponse> diaryResponseList = new ArrayList<>();
 
         for (Diary diary : diaryList) {
