@@ -41,7 +41,7 @@ public class DiaryController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @GetMapping("/diary")
+    @GetMapping("/diary/home")
     ResponseEntity<DiaryListResponse> get() {
         List<Diary> diaryList = diaryService.getList();
         List<DiaryResponse> diaryResponseList = new ArrayList<>();
@@ -67,7 +67,7 @@ public class DiaryController {
             @RequestHeader(value = "userId", required = false) String userId
     ) {
         checkUserIdHeader(userId);
-        diaryService.patchDiary(id, diaryPatchRequest);
+        diaryService.patchDiary(id, diaryPatchRequest, userId);
         return ResponseEntity.ok().build();
     }
 
@@ -77,7 +77,7 @@ public class DiaryController {
             @RequestHeader(value = "userId", required = false) String userId
     ) {
         checkUserIdHeader(userId);
-        diaryService.deleteDiary(id);
+        diaryService.deleteDiary(id, userId);
         return ResponseEntity.ok().build();
     }
 

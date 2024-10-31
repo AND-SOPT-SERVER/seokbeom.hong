@@ -27,6 +27,7 @@ public class DiaryService {
 
     @Transactional
     public void createDiary(final String userId, final DiaryCreateRequest diaryCreateRequest) {
+        isExistMemberCheck(userId);
         if (diaryRepository.existsByTitle(diaryCreateRequest.getTitle())) {
             throw new CustomException(ErrorType.DUPLICATE_TITLE_ERROR);
         }
@@ -53,28 +54,45 @@ public class DiaryService {
     public DiaryDetailResponse getDetail(final Long id) {
         final DiaryEntity diary = diaryRepository.findById(id)
                 .orElseThrow(EntityNotFoundException::new);
-        return new DiaryDetailResponse(diary.getId(), findNameById(diary.getUserId()), diary.getTitle(), diary.getContent(),
+        return new DiaryDetailResponse(diary.getId(), findNameById(diary.getUserId()), diary.getTitle(),
+                diary.getContent(),
                 diary.getCreatedAt());
     }
 
     @Transactional
-    public void patchDiary(final Long id, DiaryPatchRequest diaryPatchRequest) {
+    public void patchDiary(final Long id, final DiaryPatchRequest diaryPatchRequest, final String userId) {
+        isExistMemberCheck(userId);
         final DiaryEntity diary = diaryRepository.findByIdOrThrow(id);
+        if (diary.getUserId() != Long.parseLong(userId)) {
+            throw new CustomException(ErrorType.INVALID_MEMBER);
+        }
         diary.setTitle(diaryPatchRequest.getTitle());
         diary.setContent(diaryPatchRequest.getContent());
         diary.setUpdatedAt();
     }
 
     @Transactional
-    public void deleteDiary(final Long id) {
+    public void deleteDiary(final Long id, final String userId) {
+        isExistMemberCheck(userId);
         final DiaryEntity diary = diaryRepository.findByIdOrThrow(id);
+        if (diary.getUserId() != Long.parseLong(userId)) {
+            throw new CustomException(ErrorType.INVALID_MEMBER);
+        }
         diaryRepository.delete(diary);
     }
 
     @Transactional(readOnly = true)
-    public String findNameById(Long id) {
+    public String findNameById(final Long id) {
         MemberEntity member = memberRepository.findById(id)
                 .orElseThrow(() -> new CustomException(ErrorType.MEMBER_NOTFOUND_ERROR));
         return member.getUserName();
     }
+
+    @Transactional(readOnly = true)
+    public void isExistMemberCheck(final String userId) {
+        if (!memberRepository.existsById(Long.parseLong(userId))) {
+            throw new CustomException(ErrorType.MEMBER_NOTFOUND_ERROR);
+        }
+    }
+
 }
