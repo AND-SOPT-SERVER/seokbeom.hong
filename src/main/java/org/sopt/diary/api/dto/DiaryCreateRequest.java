@@ -1,8 +1,9 @@
 package org.sopt.diary.api.dto;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import org.hibernate.validator.constraints.Length;
+import org.sopt.diary.repository.Category;
 
 public class DiaryCreateRequest {
 
@@ -15,10 +16,22 @@ public class DiaryCreateRequest {
     @Size(min = 1, max = 30, message = "일기의 글자수는 1~30자여야 합니다.")
     private String content;
 
-    public DiaryCreateRequest(final String name, final String title, final String content) {
+    @NotNull(message = "카테고리는 필수 항목입니다.")
+    private Category category;
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
+    public DiaryCreateRequest(final String name, final String title, final String content, final Category category) {
         this.name = name;
         this.title = title;
         this.content = content;
+        this.category = category;
     }
 
     public String getName() {

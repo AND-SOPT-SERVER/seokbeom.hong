@@ -22,7 +22,7 @@ public class DiaryService {
     @Transactional
     public void createDiary(final DiaryCreateRequest diaryCreateRequest) {
         DiaryEntity diary = new DiaryEntity(diaryCreateRequest.getName(), diaryCreateRequest.getTitle(),
-                diaryCreateRequest.getContent());
+                diaryCreateRequest.getContent(), diaryCreateRequest.getCategory());
         diaryRepository.save(diary);
     }
 
