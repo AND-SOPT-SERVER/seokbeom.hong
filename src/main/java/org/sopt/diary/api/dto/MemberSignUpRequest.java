@@ -5,16 +5,16 @@ import jakarta.validation.constraints.NotNull;
 
 public class MemberSignUpRequest {
 
-    @NotNull
-    @NotBlank
+    @NotNull(message = "유저이름은 null일 수 없습니다.")
+    @NotBlank(message = "유저이름은 공백일 수 없습니다.")
     private String userName;
 
-    @NotNull
-    @NotBlank
+    @NotNull(message = "닉네임은 null일 수 없습니다.")
+    @NotBlank(message = "닉네임은 공백일 수 없습니다.")
     private String nickName;
 
-    @NotNull
-    @NotBlank
+    @NotNull(message = "비빌번호는 null일 수 없습니다.")
+    @NotBlank(message = "비빌번호는 공백일 수 없습니다.")
     private String password;
 
     public String getUserName() {

@@ -2,6 +2,8 @@ package org.sopt.diary.service;
 
 import org.sopt.diary.api.dto.MemberLoginRequest;
 import org.sopt.diary.api.dto.MemberSignUpRequest;
+import org.sopt.diary.exception.CustomException;
+import org.sopt.diary.exception.ErrorType;
 import org.sopt.diary.repository.MemberEntity;
 import org.sopt.diary.repository.MemberRepository;
 import org.springframework.stereotype.Service;
@@ -19,7 +21,7 @@ public class MemberService {
     @Transactional
     public void signUp(final MemberSignUpRequest memberSignUpRequest) {
         if (memberRepository.existsByNickName(memberSignUpRequest.getNickName())) {
-            //todo: 중복 닉네임 방지 에러
+            throw new CustomException(ErrorType.DUPLICATE_NICKNAME_ERROR);
         }
         MemberEntity member = new MemberEntity(memberSignUpRequest.getUserName(), memberSignUpRequest.getPassword(),
                 memberSignUpRequest.getNickName());

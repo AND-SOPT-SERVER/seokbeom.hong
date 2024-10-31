@@ -32,6 +32,6 @@ public class MemberController {
     ResponseEntity<Long> getMembers(
             @Valid @RequestBody final MemberLoginRequest memberLoginRequest
             ) {
-        return ResponseEntity.ok(memberService.login(memberLoginRequest)).build();
+        return ResponseEntity.ok(memberService.login(memberLoginRequest));
     }
 }
