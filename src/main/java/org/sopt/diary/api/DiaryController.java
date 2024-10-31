@@ -55,9 +55,11 @@ public class DiaryController {
 
     @GetMapping("/diary/{id}")
     ResponseEntity<DiaryDetailResponse> getDetail(
-            @PathVariable final Long id
+            @PathVariable final Long id,
+            @RequestHeader(value = "userId", required = false) String userId
     ) {
-        return ResponseEntity.ok(diaryService.getDetail(id));
+        checkUserIdHeader(userId);
+        return ResponseEntity.ok(diaryService.getDetail(id, userId));
     }
 
     @PatchMapping("/diary/{id}")

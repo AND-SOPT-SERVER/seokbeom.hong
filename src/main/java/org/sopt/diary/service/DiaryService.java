@@ -50,7 +50,8 @@ public class DiaryService {
         return diaryList;
     }
     @Transactional(readOnly = true)
-    public DiaryDetailResponse getDetail(final Long id) {
+    public DiaryDetailResponse getDetail(final Long id, String userId) {
+        isExistMemberCheck(userId);
         final DiaryEntity diary = diaryRepository.findById(id)
                 .orElseThrow(EntityNotFoundException::new);
         return new DiaryDetailResponse(diary.getId(), diary.getTitle(),
@@ -93,5 +94,4 @@ public class DiaryService {
             throw new CustomException(ErrorType.MEMBER_NOTFOUND_ERROR);
         }
     }
-
 }
