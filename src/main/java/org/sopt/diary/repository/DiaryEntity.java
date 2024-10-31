@@ -19,7 +19,7 @@ public class DiaryEntity {
     private Long id;
 
     @Column
-    private String name;
+    private Long userId;
 
     @Column
     private String title;
@@ -43,8 +43,8 @@ public class DiaryEntity {
     public DiaryEntity() {
     }
 
-    public DiaryEntity(final String name, final String title, final String content, final Category category) {
-        this.name = name;
+    public DiaryEntity(final Long userId, final String title, final String content, final Category category) {
+        this.userId = userId;
         this.title = title;
         this.content = content;
         this.contentLength = content.length();
@@ -62,8 +62,8 @@ public class DiaryEntity {
         return category;
     }
 
-    public String getName() {
-        return name;
+    public Long getUserId() {
+        return userId;
     }
 
     public String getTitle() {

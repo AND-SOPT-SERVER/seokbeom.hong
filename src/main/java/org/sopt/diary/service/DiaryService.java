@@ -10,23 +10,27 @@ import org.sopt.diary.exception.CustomException;
 import org.sopt.diary.exception.ErrorType;
 import org.sopt.diary.repository.DiaryEntity;
 import org.sopt.diary.repository.DiaryRepository;
+import org.sopt.diary.repository.MemberEntity;
+import org.sopt.diary.repository.MemberRepository;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 @Component
 public class DiaryService {
     private final DiaryRepository diaryRepository;
+    private final MemberRepository memberRepository;
 
-    public DiaryService(DiaryRepository diaryRepository) {
+    public DiaryService(DiaryRepository diaryRepository, MemberRepository memberRepository) {
         this.diaryRepository = diaryRepository;
+        this.memberRepository = memberRepository;
     }
 
     @Transactional
-    public void createDiary(final DiaryCreateRequest diaryCreateRequest) {
+    public void createDiary(final String userId, final DiaryCreateRequest diaryCreateRequest) {
         if (diaryRepository.existsByTitle(diaryCreateRequest.getTitle())) {
             throw new CustomException(ErrorType.DUPLICATE_TITLE_ERROR);
         }
-        DiaryEntity diary = new DiaryEntity(diaryCreateRequest.getName(), diaryCreateRequest.getTitle(),
+        DiaryEntity diary = new DiaryEntity(Long.parseLong(userId), diaryCreateRequest.getTitle(),
                 diaryCreateRequest.getContent(), diaryCreateRequest.getCategory());
         diaryRepository.save(diary);
     }
@@ -38,7 +42,7 @@ public class DiaryService {
 
         for (DiaryEntity diaryEntity : diaryEntityList) {
             diaryList.add(
-                    new Diary(diaryEntity.getId(), diaryEntity.getName())
+                    new Diary(diaryEntity.getId(), findNameById(diaryEntity.getId()))
             );
         }
 
@@ -49,7 +53,7 @@ public class DiaryService {
     public DiaryDetailResponse getDetail(final Long id) {
         final DiaryEntity diary = diaryRepository.findById(id)
                 .orElseThrow(EntityNotFoundException::new);
-        return new DiaryDetailResponse(diary.getId(), diary.getName(), diary.getTitle(), diary.getContent(),
+        return new DiaryDetailResponse(diary.getId(), findNameById(diary.getUserId()), diary.getTitle(), diary.getContent(),
                 diary.getCreatedAt());
     }
 
@@ -65,5 +69,12 @@ public class DiaryService {
     public void deleteDiary(final Long id) {
         final DiaryEntity diary = diaryRepository.findByIdOrThrow(id);
         diaryRepository.delete(diary);
+    }
+
+    @Transactional(readOnly = true)
+    public String findNameById(Long id) {
+        MemberEntity member = memberRepository.findById(id)
+                .orElseThrow(() -> new CustomException(ErrorType.MEMBER_NOTFOUND_ERROR));
+        return member.getUserName();
     }
 }

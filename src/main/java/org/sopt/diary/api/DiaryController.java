@@ -8,6 +8,8 @@ import org.sopt.diary.api.dto.DiaryListResponse;
 import org.sopt.diary.api.dto.DiaryPatchRequest;
 import org.sopt.diary.api.dto.DiaryCreateRequest;
 import org.sopt.diary.api.dto.DiaryResponse;
+import org.sopt.diary.exception.CustomException;
+import org.sopt.diary.exception.ErrorType;
 import org.sopt.diary.service.Diary;
 import org.sopt.diary.service.DiaryService;
 import org.springframework.http.HttpStatus;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -30,9 +33,11 @@ public class DiaryController {
 
     @PostMapping("/diary")
     ResponseEntity<String> post(
-            @Valid @RequestBody final DiaryCreateRequest diaryCreateRequest
+            @Valid @RequestBody final DiaryCreateRequest diaryCreateRequest,
+            @RequestHeader(value = "userId", required = false) String userId
     ) {
-        diaryService.createDiary(diaryCreateRequest);
+        checkUserIdHeader(userId);
+        diaryService.createDiary(userId, diaryCreateRequest);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
@@ -58,17 +63,27 @@ public class DiaryController {
     @PatchMapping("/diary/{id}")
     ResponseEntity<String> patch(
             @PathVariable final Long id,
-            @Valid @RequestBody final DiaryPatchRequest diaryPatchRequest
+            @Valid @RequestBody final DiaryPatchRequest diaryPatchRequest,
+            @RequestHeader(value = "userId", required = false) String userId
     ) {
+        checkUserIdHeader(userId);
         diaryService.patchDiary(id, diaryPatchRequest);
         return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/diary/{id}")
     ResponseEntity<Void> delete(
-            @PathVariable final Long id
+            @PathVariable final Long id,
+            @RequestHeader(value = "userId", required = false) String userId
     ) {
+        checkUserIdHeader(userId);
         diaryService.deleteDiary(id);
         return ResponseEntity.ok().build();
+    }
+
+    private void checkUserIdHeader(String userId) {
+        if (userId == null || userId.isEmpty()) {
+            throw new CustomException(ErrorType.LOGIN_ERROR);
+        }
     }
 }

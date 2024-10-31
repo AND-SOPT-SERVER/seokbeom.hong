@@ -22,6 +22,10 @@ public class MemberEntity {
     @Column(name = "password", nullable = false)
     private String password;
 
+    public String getUserName() {
+        return userName;
+    }
+
     @Column(name = "nick_name", nullable = false)
     private String nickName;
 

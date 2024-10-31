@@ -7,7 +7,6 @@ import org.sopt.diary.repository.Category;
 
 public class DiaryCreateRequest {
 
-    private String name;
     @NotBlank(message = "일기의 제목은 공백일 수 없습니다.")
     @Size(min = 1, max = 10, message = "일기 제목의 글자수는 1~10자여야 합니다.")
     private String title;
@@ -27,16 +26,12 @@ public class DiaryCreateRequest {
         this.category = category;
     }
 
-    public DiaryCreateRequest(final String name, final String title, final String content, final Category category) {
-        this.name = name;
+    public DiaryCreateRequest(final String title, final String content, final Category category) {
         this.title = title;
         this.content = content;
         this.category = category;
     }
 
-    public String getName() {
-        return name;
-    }
 
     public String getTitle() {
         return title;

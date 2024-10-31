@@ -7,6 +7,7 @@ public enum ErrorType {
     DUPLICATE_NICKNAME_ERROR(HttpStatus.BAD_REQUEST, "중복된 닉네임입니다."),
     MEMBER_NOTFOUND_ERROR(HttpStatus.BAD_REQUEST, "존재하지 않는 회원입니다."),
     DUPLICATE_TITLE_ERROR(HttpStatus.BAD_REQUEST, "중복된 일기 제목입니다."),
+    LOGIN_ERROR(HttpStatus.BAD_REQUEST, "로그인 후 이용해주세요."),
     DIARY_NOTFOUND_ERROR(HttpStatus.BAD_REQUEST, "존재하지 않는 일기입니다.");
     private final HttpStatus httpStatus;
     private final String message;
