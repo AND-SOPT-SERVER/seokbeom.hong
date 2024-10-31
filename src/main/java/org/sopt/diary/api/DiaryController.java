@@ -83,6 +83,20 @@ public class DiaryController {
         return ResponseEntity.ok().build();
     }
 
+    @GetMapping("/diary/me")
+    ResponseEntity<DiaryListResponse> getMyDiary(
+            @RequestHeader(value = "userId", required = false) String userId
+    ) {
+        checkUserIdHeader(userId);
+        List<Diary> diaryList = diaryService.getMyDiaryList(userId);
+        List<DiaryResponse> diaryResponseList = new ArrayList<>();
+
+        for (Diary diary : diaryList) {
+            diaryResponseList.add(new DiaryResponse(diary.getId(), diary.getTitle(), diary.getNickName(), diary.getContent(), diary.getCreatedAt()));
+        }
+        return ResponseEntity.ok(new DiaryListResponse(diaryResponseList));
+    }
+
     private void checkUserIdHeader(String userId) {
         if (userId == null || userId.isEmpty()) {
             throw new CustomException(ErrorType.LOGIN_ERROR);

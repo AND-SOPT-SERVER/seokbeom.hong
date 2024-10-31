@@ -44,11 +44,13 @@ public class DiaryService {
 
         for (DiaryEntity diaryEntity : diaryEntityList) {
             diaryList.add(
-                    new Diary(diaryEntity.getId(), diaryEntity.getTitle(), findNickNameById(diaryEntity.getId()), diaryEntity.getContent(), diaryEntity.getCreatedAt())
+                    new Diary(diaryEntity.getId(), diaryEntity.getTitle(), findNickNameById(diaryEntity.getUserId()),
+                            diaryEntity.getContent(), diaryEntity.getCreatedAt())
             );
         }
         return diaryList;
     }
+
     @Transactional(readOnly = true)
     public DiaryDetailResponse getDetail(final Long id, String userId) {
         isExistMemberCheck(userId);
@@ -93,5 +95,20 @@ public class DiaryService {
         if (!memberRepository.existsById(Long.parseLong(userId))) {
             throw new CustomException(ErrorType.MEMBER_NOTFOUND_ERROR);
         }
+    }
+
+    @Transactional(readOnly = true)
+    public List<Diary> getMyDiaryList(final String userId) {
+        isExistMemberCheck(userId);
+        final List<DiaryEntity> diaryEntityList = diaryRepository.findTop10ByUserIdOrderByIdDesc(Long.parseLong(userId));
+        final List<Diary> diaryList = new ArrayList<>();
+
+        for (DiaryEntity diaryEntity : diaryEntityList) {
+            diaryList.add(
+                    new Diary(diaryEntity.getId(), diaryEntity.getTitle(), findNickNameById(diaryEntity.getUserId()),
+                            diaryEntity.getContent(), diaryEntity.getCreatedAt())
+            );
+        }
+        return diaryList;
     }
 }
