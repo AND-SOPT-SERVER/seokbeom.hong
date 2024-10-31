@@ -1,15 +1,16 @@
-package org.sopt.diary.service;
+package org.sopt.diary.api.dto;
 
 import java.time.LocalDate;
 
-public class Diary {
-    private final long id;
-    private final String title;
-    private final String nickName;
-    private final String content;
-    private final LocalDate createdAt;
+public class DiaryResponse {
 
-    public Diary(long id, String title, String nickName, String content, LocalDate createdAt) {
+    private long id;
+    private String title;
+    private String nickName;
+    private String content;
+    private LocalDate createdAt;
+
+    public DiaryResponse(long id, String title, String nickName, String content, LocalDate createdAt) {
         this.id = id;
         this.title = title;
         this.nickName = nickName;
