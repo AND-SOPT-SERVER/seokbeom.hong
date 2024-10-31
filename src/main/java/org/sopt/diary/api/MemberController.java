@@ -2,6 +2,7 @@ package org.sopt.diary.api;
 
 import jakarta.validation.Valid;
 import org.sopt.diary.api.dto.MemberLoginRequest;
+import org.sopt.diary.api.dto.MemberLoginResponse;
 import org.sopt.diary.api.dto.MemberSignUpRequest;
 import org.sopt.diary.service.MemberService;
 import org.springframework.http.HttpStatus;
@@ -29,7 +30,7 @@ public class MemberController {
     }
 
     @PostMapping("/auth/login")
-    ResponseEntity<Long> getMembers(
+    ResponseEntity<MemberLoginResponse> getMembers(
             @Valid @RequestBody final MemberLoginRequest memberLoginRequest
             ) {
         return ResponseEntity.ok(memberService.login(memberLoginRequest));

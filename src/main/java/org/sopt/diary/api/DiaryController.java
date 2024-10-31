@@ -1,5 +1,6 @@
 package org.sopt.diary.api;
 
+import jakarta.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 import org.sopt.diary.api.dto.DiaryDetailResponse;
@@ -29,11 +30,8 @@ public class DiaryController {
 
     @PostMapping("/diary")
     ResponseEntity<String> post(
-            @RequestBody final DiaryCreateRequest diaryCreateRequest
+            @Valid @RequestBody final DiaryCreateRequest diaryCreateRequest
     ) {
-        if (diaryCreateRequest.getContent().length() > 30) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("일기는 30자까지만 작성할 수 있습니다.");
-        }
         diaryService.createDiary(diaryCreateRequest);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }

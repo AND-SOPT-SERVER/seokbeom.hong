@@ -1,6 +1,7 @@
 package org.sopt.diary.service;
 
 import org.sopt.diary.api.dto.MemberLoginRequest;
+import org.sopt.diary.api.dto.MemberLoginResponse;
 import org.sopt.diary.api.dto.MemberSignUpRequest;
 import org.sopt.diary.exception.CustomException;
 import org.sopt.diary.exception.ErrorType;
@@ -29,9 +30,9 @@ public class MemberService {
     }
 
     @Transactional(readOnly = true)
-    public Long login(MemberLoginRequest memberLoginRequest) {
+    public MemberLoginResponse login(MemberLoginRequest memberLoginRequest) {
         MemberEntity member = memberRepository.findByNickNameAndPasswordOrThrow(memberLoginRequest.getNickName(),
                 memberLoginRequest.getPassword());
-        return member.getId();
+        return new MemberLoginResponse(member.getId());
     }
 }
