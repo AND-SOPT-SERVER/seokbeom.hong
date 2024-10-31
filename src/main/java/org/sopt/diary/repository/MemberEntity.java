@@ -22,8 +22,8 @@ public class MemberEntity {
     @Column(name = "password", nullable = false)
     private String password;
 
-    public String getUserName() {
-        return userName;
+    public String getNickName() {
+        return nickName;
     }
 
     @Column(name = "nick_name", nullable = false)

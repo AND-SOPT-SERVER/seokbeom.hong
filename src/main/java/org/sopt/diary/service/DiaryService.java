@@ -1,6 +1,7 @@
 package org.sopt.diary.service;
 
 import jakarta.persistence.EntityNotFoundException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import org.sopt.diary.api.dto.DiaryDetailResponse;
@@ -43,18 +44,16 @@ public class DiaryService {
 
         for (DiaryEntity diaryEntity : diaryEntityList) {
             diaryList.add(
-                    new Diary(diaryEntity.getId(), findNameById(diaryEntity.getId()))
+                    new Diary(diaryEntity.getId(), diaryEntity.getTitle(), findNickNameById(diaryEntity.getId()), diaryEntity.getContent(), diaryEntity.getCreatedAt())
             );
         }
-
         return diaryList;
     }
-
     @Transactional(readOnly = true)
     public DiaryDetailResponse getDetail(final Long id) {
         final DiaryEntity diary = diaryRepository.findById(id)
                 .orElseThrow(EntityNotFoundException::new);
-        return new DiaryDetailResponse(diary.getId(), findNameById(diary.getUserId()), diary.getTitle(),
+        return new DiaryDetailResponse(diary.getId(), diary.getTitle(),
                 diary.getContent(),
                 diary.getCreatedAt());
     }
@@ -82,10 +81,10 @@ public class DiaryService {
     }
 
     @Transactional(readOnly = true)
-    public String findNameById(final Long id) {
+    public String findNickNameById(final Long id) {
         MemberEntity member = memberRepository.findById(id)
                 .orElseThrow(() -> new CustomException(ErrorType.MEMBER_NOTFOUND_ERROR));
-        return member.getUserName();
+        return member.getNickName();
     }
 
     @Transactional(readOnly = true)

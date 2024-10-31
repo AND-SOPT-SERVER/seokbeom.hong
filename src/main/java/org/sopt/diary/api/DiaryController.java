@@ -1,6 +1,7 @@
 package org.sopt.diary.api;
 
 import jakarta.validation.Valid;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import org.sopt.diary.api.dto.DiaryDetailResponse;
@@ -47,9 +48,8 @@ public class DiaryController {
         List<DiaryResponse> diaryResponseList = new ArrayList<>();
 
         for (Diary diary : diaryList) {
-            diaryResponseList.add(new DiaryResponse(diary.getId(), diary.getName()));
+            diaryResponseList.add(new DiaryResponse(diary.getId(), diary.getTitle(), diary.getNickName(), diary.getContent(), diary.getCreatedAt()));
         }
-
         return ResponseEntity.ok(new DiaryListResponse(diaryResponseList));
     }
 
