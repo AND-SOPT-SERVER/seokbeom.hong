@@ -3,9 +3,9 @@ package org.sopt.diary.service;
 import jakarta.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
-import org.sopt.diary.api.DiaryDetailResponse;
-import org.sopt.diary.api.DiaryPatchRequest;
-import org.sopt.diary.api.DiaryRequest;
+import org.sopt.diary.api.dto.DiaryDetailResponse;
+import org.sopt.diary.api.dto.DiaryPatchRequest;
+import org.sopt.diary.api.dto.DiaryCreateRequest;
 import org.sopt.diary.repository.DiaryEntity;
 import org.sopt.diary.repository.DiaryRepository;
 import org.springframework.stereotype.Component;
@@ -20,9 +20,9 @@ public class DiaryService {
     }
 
     @Transactional
-    public void createDiary(final DiaryRequest diaryRequest) {
-        DiaryEntity diary = new DiaryEntity(diaryRequest.getName(), diaryRequest.getTitle(),
-                diaryRequest.getContent());
+    public void createDiary(final DiaryCreateRequest diaryCreateRequest) {
+        DiaryEntity diary = new DiaryEntity(diaryCreateRequest.getName(), diaryCreateRequest.getTitle(),
+                diaryCreateRequest.getContent());
         diaryRepository.save(diary);
     }
 

@@ -2,6 +2,11 @@ package org.sopt.diary.api;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.sopt.diary.api.dto.DiaryDetailResponse;
+import org.sopt.diary.api.dto.DiaryListResponse;
+import org.sopt.diary.api.dto.DiaryPatchRequest;
+import org.sopt.diary.api.dto.DiaryCreateRequest;
+import org.sopt.diary.api.dto.DiaryResponse;
 import org.sopt.diary.service.Diary;
 import org.sopt.diary.service.DiaryService;
 import org.springframework.http.HttpStatus;
@@ -24,12 +29,12 @@ public class DiaryController {
 
     @PostMapping("/diary")
     ResponseEntity<String> post(
-            @RequestBody final DiaryRequest diaryRequest
+            @RequestBody final DiaryCreateRequest diaryCreateRequest
     ) {
-        if (diaryRequest.getContent().length() > 30) {
+        if (diaryCreateRequest.getContent().length() > 30) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("일기는 30자까지만 작성할 수 있습니다.");
         }
-        diaryService.createDiary(diaryRequest);
+        diaryService.createDiary(diaryCreateRequest);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
