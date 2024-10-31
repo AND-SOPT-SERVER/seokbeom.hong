@@ -18,18 +18,17 @@ public class DiaryCreateRequest {
     @NotNull(message = "카테고리는 필수 항목입니다.")
     private Category category;
 
+    private boolean isShare;
+
     public Category getCategory() {
         return category;
     }
 
-    public void setCategory(Category category) {
-        this.category = category;
-    }
-
-    public DiaryCreateRequest(final String title, final String content, final Category category) {
+    public DiaryCreateRequest(final String title, final String content, final Category category, boolean isShare) {
         this.title = title;
         this.content = content;
         this.category = category;
+        this.isShare = isShare;
     }
 
 
@@ -39,5 +38,9 @@ public class DiaryCreateRequest {
 
     public String getContent() {
         return content;
+    }
+
+    public boolean getIsShare() {
+        return isShare;
     }
 }

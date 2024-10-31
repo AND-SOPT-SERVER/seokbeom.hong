@@ -40,10 +40,13 @@ public class DiaryEntity {
     @Column
     private LocalDate updatedAt;
 
+    @Column(name = "is_share")
+    private boolean isShare;
+
     public DiaryEntity() {
     }
 
-    public DiaryEntity(final Long userId, final String title, final String content, final Category category) {
+    public DiaryEntity(final Long userId, final String title, final String content, final Category category, boolean isShare) {
         this.userId = userId;
         this.title = title;
         this.content = content;
@@ -51,6 +54,7 @@ public class DiaryEntity {
         this.category = category;
         this.createdAt = LocalDate.now();
         this.updatedAt = LocalDate.now();
+        this.isShare = isShare;
     }
 
     // 왜 소문자 long일까

@@ -33,7 +33,7 @@ public class DiaryService {
             throw new CustomException(ErrorType.DUPLICATE_TITLE_ERROR);
         }
         DiaryEntity diary = new DiaryEntity(Long.parseLong(userId), diaryCreateRequest.getTitle(),
-                diaryCreateRequest.getContent(), diaryCreateRequest.getCategory());
+                diaryCreateRequest.getContent(), diaryCreateRequest.getCategory(), diaryCreateRequest.getIsShare());
         diaryRepository.save(diary);
     }
 
