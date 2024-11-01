@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -39,7 +40,7 @@ public class DiaryController {
         List<DiaryResponse> diaryResponseList = new ArrayList<>();
 
         for (Diary diary : diaryList) {
-            diaryResponseList.add(new DiaryResponse(diary.getId(), diary.getName()));
+            diaryResponseList.add(new DiaryResponse(diary.getId(), diary.getName(), diary.getCategory()));
         }
 
         return ResponseEntity.ok(new DiaryListResponse(diaryResponseList));
@@ -70,5 +71,12 @@ public class DiaryController {
     ) {
         diaryService.deleteDiary(id);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping(value = "/diary", params = "category")
+    ResponseEntity<List<DiaryCategoryResponse>> getDiaryList(
+            @RequestParam final String category
+    ) {
+        return ResponseEntity.ok(diaryService.getDiaryListByCategory(category));
     }
 }

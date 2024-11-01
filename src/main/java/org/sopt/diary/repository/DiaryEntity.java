@@ -6,6 +6,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 public class DiaryEntity {
@@ -21,6 +22,9 @@ public class DiaryEntity {
     private String title;
 
     @Column
+    private String category;
+
+    @Column
     private String content;
 
     @Column
@@ -30,18 +34,19 @@ public class DiaryEntity {
     private LocalDate createdAt;
 
     @Column
-    private LocalDate updatedAt;
+    private LocalDateTime updatedAt;
 
     public DiaryEntity() {
     }
 
-    public DiaryEntity(final String name, final String title, final String content) {
+    public DiaryEntity(final String name, final String title, final String content, final String category) {
         this.name = name;
         this.title = title;
         this.content = content;
+        this.category = category;
         this.contentLength = content.length();
         this.createdAt = LocalDate.now();
-        this.updatedAt = LocalDate.now();
+        this.updatedAt = LocalDateTime.now();
     }
 
     // 왜 소문자 long일까
@@ -65,6 +70,18 @@ public class DiaryEntity {
         return createdAt;
     }
 
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(final String category) {
+        this.category = category;
+    }
+
     public void setTitle(final String title) {
         this.title = title;
     }
@@ -75,6 +92,6 @@ public class DiaryEntity {
     }
 
     public void setUpdatedAt() {
-        this.updatedAt = LocalDate.now();
+        this.updatedAt = LocalDateTime.now();
     }
 }
